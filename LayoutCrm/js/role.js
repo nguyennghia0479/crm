@@ -1,7 +1,6 @@
 $(document).ready(function () {
-    manageData();
-
-   function manageData() {
+   
+    function manageData() {
         $.ajax({
             url: "http://localhost:8080/crm/api/role",
             method: "GET"
@@ -22,90 +21,7 @@ $(document).ready(function () {
                 $("#role_table tbody").append(row);
             })
         });
-   }
-
-    $("body").on('click', '.btn-delete-role', function () {
-        var roleId = $(this).attr('role-id');
-        $(".confirm-delete").attr("role-id", roleId);
-    });
-
-    $("body").on('click', '.confirm-delete', function () {
-        var roleId = $(this).attr('role-id')
-        var row = $('.btn-delete-role[role-id=' + roleId +']');
-        $.ajax({
-            url: `http://localhost:8080/crm/api/role?id=${roleId}`,
-            method: "DELETE",
-        }).done(function(result){
-            if (result.isSuccess == true) {
-                row.closest('tr').remove()
-                $('#deleteModal').modal('hide');
-                getToastSuccess(result)
-            } 
-            else {
-                getToastError(result)
-            }
-        })
-    });
-
-    $("body").on('click', '#btn-edit-role',function(e){
-        e.preventDefault()
-        var id = $(this).attr("role-id")
-        var name = $(this).parent("td").prev("td").prev("td").text();
-        var description = $(this).parent("td").prev("td").text();
-        $("#id").val(id)
-        $("#name").val(name)
-        $("#description").val(description)
-    })
-
-    $("#btn-save-role").click(function(e){
-        e.preventDefault()
-        var dataId = $("#id").val()
-        var dataName = $("#name").val()
-        var dataDescription = $("#description").val()
-        if(dataId == '') {
-            $.ajax({
-                url: "http://localhost:8080/crm/api/role",
-                method: "POST",
-                dataType: 'json',
-                data: JSON.stringify({
-                    name : dataName,
-                    description : dataDescription
-                })
-            }).done(function(result){
-                if(result.isSuccess == true) {
-                    $("#name").val("")
-                    $("#description").val("")
-                    getToastSuccess(result)
-                    manageData();
-                }
-                else {
-                    getToastError(result)
-                }
-            })
-        } else {
-            $.ajax({
-                url: "http://localhost:8080/crm/api/role",
-                method: "PUT",
-                dataType: 'json',
-                data: JSON.stringify({
-                    id : dataId,
-                    name : dataName,
-                    description : dataDescription
-                })
-            }).done(function(result){
-                if(result.isSuccess == true) {
-                    $("#id").val(dataId)
-                    $("#name").val(dataName)
-                    $("#description").val(dataDescription)
-                    getToastSuccess(result)
-                    manageData();
-                }
-                else {
-                    getToastError(result)
-                }
-            })
-        }
-    })
+    }
 
     function getToastSuccess(result) {
         $.toast({
@@ -126,4 +42,96 @@ $(document).ready(function () {
             icon: 'error',
         })
     }
+
+    function clearFormData() {
+        $("#id").val('')
+        $("#name").val('')
+        $("#description").val('')
+    }
+
+    manageData();
+
+    $("#btn-add-role").click(function() {
+        clearFormData()
+    })
+
+    $("body").on('click', '#btn-edit-role', function (e) {
+        e.preventDefault()
+        var id = $(this).attr("role-id")
+        var name = $(this).parent("td").prev("td").prev("td").text();
+        var description = $(this).parent("td").prev("td").text();
+        $("#id").val(id)
+        $("#name").val(name)
+        $("#description").val(description)
+    })
+
+    $("#btn-save-role").click(function (e) {
+        e.preventDefault()
+        var dataId = $("#id").val()
+        var dataName = $("#name").val()
+        var dataDescription = $("#description").val()
+        if (dataId == '') {
+            $.ajax({
+                url: "http://localhost:8080/crm/api/role",
+                method: "POST",
+                data: JSON.stringify({
+                    name: dataName,
+                    description: dataDescription
+                })
+            }).done(function (result) {
+                if (result.isSuccess == true) {
+                    clearFormData()
+                    $("#roleFormModal").modal('hide')
+                    getToastSuccess(result)
+                    manageData();
+                }
+                else {
+                    getToastError(result)
+                }
+            })
+        } else {
+            $.ajax({
+                url: "http://localhost:8080/crm/api/role",
+                method: "PUT",
+                data: JSON.stringify({
+                    id: dataId,
+                    name: dataName,
+                    description: dataDescription
+                })
+            }).done(function (result) {
+                if (result.isSuccess == true) {
+                    clearFormData()
+                    $("#roleFormModal").modal('hide')
+                    getToastSuccess(result)
+                    manageData();
+                }
+                else {
+                    getToastError(result)
+                }
+            })
+        }
+    })
+
+    $("body").on('click', '.btn-delete-role', function () {
+        var roleId = $(this).attr('role-id');
+        $(".confirm-delete").attr("role-id", roleId);
+    });
+
+    $("body").on('click', '.confirm-delete', function () {
+        var roleId = $(this).attr('role-id')
+        var row = $('.btn-delete-role[role-id=' + roleId + ']');
+        $.ajax({
+            url: `http://localhost:8080/crm/api/role?id=${roleId}`,
+            method: "DELETE",
+        }).done(function (result) {
+            if (result.isSuccess == true) {
+                row.closest('tr').remove()
+                $('#deleteModal').modal('hide');
+                getToastSuccess(result)
+            }
+            else {
+                getToastError(result)
+            }
+        })
+    });
 });

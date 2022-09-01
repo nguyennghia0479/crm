@@ -17,9 +17,10 @@ $(document).ready(function () {
                                 <td>${val.email}</td>
                                 <td>${val.roleName}</td>
                                 <td width="20%">
-                                    <a id="btn-edit-user" href="#userFormModal" class="btn btn-sm btn-primary" data-toggle="modal" 
+                                    <a href="#userFormModal" class="btn btn-sm btn-primary btn-edit-user" data-toggle="modal" 
                                         user-id=${val.id}>Sửa</a>
-                                    <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete-user" data-toggle="modal" user-id=${val.id}>Xóa</a>
+                                    <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete-user" data-toggle="modal" 
+                                        user-id=${val.id}>Xóa</a>
                                     <a href="user-details.html" class="btn btn-sm btn-info">Xem</a>
                                 </td>
                             </tr>`
@@ -63,18 +64,21 @@ $(document).ready(function () {
         })
     }
 
-    manageData()
-
-    $("#btn-add-user").click(function() {
+    function clearFormData() {
         $("#id").val('')
         $("#fullName").val('')
         $("#email").val('')
         $("#password").val('')
         getSelectRole(null)
+    }
+
+    manageData()
+
+    $("#btn-add-user").click(function() {
+        clearFormData()
     })
 
-    $("body").on('click', '#btn-edit-user', function(e) {
-        e.preventDefault()
+    $("body").on('click', '.btn-edit-user', function() {
         var userId = $(this).attr("user-id")
         $.ajax({
             url : `http://localhost:8080/crm/api/user?id=${userId}`,
@@ -86,6 +90,57 @@ $(document).ready(function () {
             $("#password").val(result.password)
             getSelectRole(result.roleId)
         })
+    })
+
+    $("#btn-save-user").click(function(e) {
+        e.preventDefault()
+        var dataId = $("#id").val()
+        var dataFullName = $("#fullName").val()
+        var dataEmail = $("#email").val()
+        var dataPassword = $("#password").val()
+        var dataRoleId = $("#roleSelect").val()
+        if(dataId == '') {
+            $.ajax({
+                url : "http://localhost:8080/crm/api/user",
+                method : "POST",
+                data : JSON.stringify({
+                    fullName : dataFullName,
+                    email : dataEmail,
+                    password : dataPassword,
+                    roleId : dataRoleId
+                })
+            }).done(function(result){
+                if(result.isSuccess = true) {
+                    clearFormData()
+                    $('#userFormModal').modal('hide')
+                    getToastSuccess(result)
+                    manageData()
+                } else {
+                    getToastError(result)
+                }
+            })
+        } else {
+            $.ajax({
+                url : "http://localhost:8080/crm/api/user",
+                method : "PUT",
+                data : JSON.stringify({
+                    id : dataId,
+                    fullName : dataFullName,
+                    email : dataEmail,
+                    password : dataPassword,
+                    roleId : dataRoleId
+                })
+            }).done(function(result){
+                if(result.isSuccess = true) {
+                    clearFormData()
+                    $('#userFormModal').modal('hide')
+                    getToastSuccess(result)
+                    manageData()
+                } else {
+                    getToastError(result)
+                }
+            })
+        }
     })
 
     $("body").on('click', '.btn-delete-user', function(e) {
