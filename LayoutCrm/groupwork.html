@@ -13,6 +13,7 @@
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Menu CSS -->
     <link href="plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="plugins/bower_components/toast-master/css/jquery.toast.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <!-- animation CSS -->
     <link href="css/animate.css" rel="stylesheet">
@@ -126,7 +127,7 @@
                         <h4 class="page-title">Danh sách dự án</h4>
                     </div>
                     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12 text-right">
-                        <a href="groupwork-add.html" class="btn btn-sm btn-success">Thêm mới</a>
+                        <a id="btn-add-job" href="#jobFormModal" class="btn btn-sm btn-success" data-toggle="modal">Thêm mới</a>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -135,7 +136,7 @@
                     <div class="col-sm-12">
                         <div class="white-box">
                             <div class="table-responsive">
-                                <table class="table" id="example">
+                                <table class="table" id="jobTable">
                                     <thead>
                                         <tr>
                                             <th>STT</th>
@@ -146,28 +147,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Phân tích dự án</td>
-                                            <td>22/05/2019</td>
-                                            <td>30/05/2019</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-primary">Sửa</a>
-                                                <a href="#" class="btn btn-sm btn-danger">Xóa</a>
-                                                <a href="groupwork-details.html" class="btn btn-sm btn-info">Xem</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Thiết kế hệ thống</td>
-                                            <td>22/05/2019</td>
-                                            <td>30/05/2019</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-primary">Sửa</a>
-                                                <a href="#" class="btn btn-sm btn-danger">Xóa</a>
-                                                <a href="groupwork-details.html" class="btn btn-sm btn-info">Xem</a>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -178,6 +157,69 @@
             </div>
             <!-- /.container-fluid -->
             <footer class="footer text-center"> 2018 &copy; myclass.com </footer>
+            <div class="modal fade" id="deleteModal" data-backdrop="static" tabindex="-1" role="dialog" 
+                aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn muốn xóa dữ liệu này ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary confirm-delete">Đồng ý</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="jobFormModal" data-backdrop="static" tabindex="-1" role="dialog" 
+                aria-labelledby="formModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="formModalLabel">Thông tin Dự án</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#"class="form-horizontal form-material">
+                            <input id="id" type="hidden"class="form-control form-control-line"/>
+                            <div class="form-group">
+                                <label class="col-md-12">Tên dự án</label>
+                                <div class="col-md-12">
+                                    <input id="name" type="text" placeholder="Tên công việc"
+                                        class="form-control form-control-line"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Ngày bắt đầu</label>
+                                <div class="col-md-12">
+                                    <input id="startDate" type="date" placeholder="dd/MM/yyyy"
+                                        class="form-control form-control-line"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Ngày kết thúc</label>
+                                <div class="col-md-12">
+                                    <input id="endDate" type="date" placeholder="dd/MM/yyyy"
+                                        class="form-control form-control-line"> </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <button type="submit" id="btn-save-job" class="btn btn-success">Lưu</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
         <!-- /#page-wrapper -->
     </div>
@@ -195,9 +237,11 @@
     <script src="js/waves.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="js/custom.min.js"></script>
+    <script src="plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+    <script src="js/job.js"></script>
     <script>
         $(document).ready(function () {
-            $('#example').DataTable();
+            $('#jobTable').DataTable();
         });
     </script>
 </body>

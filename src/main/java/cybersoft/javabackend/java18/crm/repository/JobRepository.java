@@ -1,7 +1,6 @@
 package cybersoft.javabackend.java18.crm.repository;
 
 import cybersoft.javabackend.java18.crm.model.JobModel;
-import cybersoft.javabackend.java18.crm.validation.FormattedDateMatcher;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -10,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JobRepository extends AbstractRepository<JobModel> {
-
-    private final FormattedDateMatcher formattedDateMatcher = new FormattedDateMatcher();
 
     public JobRepository() {
     }
@@ -28,8 +25,8 @@ public class JobRepository extends AbstractRepository<JobModel> {
                 JobModel jobModel = new JobModel();
                 jobModel.setId(resultSet.getInt("id"));
                 jobModel.setName(resultSet.getString("name"));
-                jobModel.setStartDate(formattedDateMatcher.formatCommonDate(resultSet.getString("start_date")));
-                jobModel.setEndDate(formattedDateMatcher.formatCommonDate(resultSet.getString("end_date")));
+                jobModel.setStartDate(resultSet.getString("start_date"));
+                jobModel.setEndDate(resultSet.getString("end_date"));
                 jobModels.add(jobModel);
             }
             return jobModels;
@@ -48,8 +45,8 @@ public class JobRepository extends AbstractRepository<JobModel> {
                 JobModel jobModel = new JobModel();
                 jobModel.setId(resultSet.getInt("id"));
                 jobModel.setName(resultSet.getString("name"));
-                jobModel.setStartDate(formattedDateMatcher.formatCommonDate(resultSet.getString("start_date")));
-                jobModel.setEndDate(formattedDateMatcher.formatCommonDate(resultSet.getString("end_date")));
+                jobModel.setStartDate(resultSet.getString("start_date"));
+                jobModel.setEndDate(resultSet.getString("end_date"));
                 return jobModel;
             }
             return null;

@@ -34,10 +34,10 @@ public class RoleController extends HttpServlet {
         String id = req.getParameter("id");
         if (id == null) {
             List<RoleModel> roleModels = roleService.findAll();
-            printJson(resp, roleModels);
+            responseJson(resp, roleModels);
         } else {
             RoleModel roleModel = roleService.findRoleById(id);
-            printJson(resp, roleModel);
+            responseJson(resp, roleModel);
         }
     }
 
@@ -54,7 +54,7 @@ public class RoleController extends HttpServlet {
             message = "Add new role failed";
         }
         ResponseData responseData = new ResponseData().getResponseData(result, message);
-        printJson(resp, responseData);
+        responseJson(resp, responseData);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class RoleController extends HttpServlet {
             message = "Delete role failed";
         }
         ResponseData responseData = new ResponseData().getResponseData(result, message);
-        printJson(resp, responseData);
+        responseJson(resp, responseData);
     }
 
     @Override
@@ -83,10 +83,10 @@ public class RoleController extends HttpServlet {
             message = "Update role failed";
         }
         ResponseData responseData = new ResponseData().getResponseData(result, message);
-        printJson(resp, responseData);
+        responseJson(resp, responseData);
     }
 
-    private void printJson(HttpServletResponse resp, Object object) throws IOException {
+    private void responseJson(HttpServletResponse resp, Object object) throws IOException {
         String respJson = this.gson.toJson(object);
         PrintWriter out = resp.getWriter();
         out.println(respJson);

@@ -5,20 +5,20 @@ $(document).ready(function () {
             url: "http://localhost:8080/crm/api/role",
             method: "GET"
         }).done(function (result) {
-            $("#role_table tbody").empty();
+            $("#roleTable tbody").empty();
             $.each(result, function (i, val) {
                 var row = `<tr>
                                 <td>${i + 1}</td>
                                 <td>${val.name}</td>
                                 <td>${val.description}</td>
                                 <td>
-                                    <a id="btn-edit-role" href="#roleFormModal" class="btn btn-sm btn-primary" data-toggle="modal"
+                                    <a href="#roleFormModal" class="btn btn-sm btn-primary btn-edit-role" data-toggle="modal"
                                         role-id="${val.id}">Sửa</a>
                                     <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete-role" data-toggle="modal"
                                         role-id="${val.id}">Xóa</a>
                                 </td>
                             </tr>`
-                $("#role_table tbody").append(row);
+                $("#roleTable tbody").append(row);
             })
         });
     }
@@ -55,7 +55,7 @@ $(document).ready(function () {
         clearFormData()
     })
 
-    $("body").on('click', '#btn-edit-role', function (e) {
+    $("body").on('click', '.btn-edit-role', function (e) {
         e.preventDefault()
         var id = $(this).attr("role-id")
         var name = $(this).parent("td").prev("td").prev("td").text();
@@ -81,13 +81,13 @@ $(document).ready(function () {
             }).done(function (result) {
                 if (result.isSuccess == true) {
                     clearFormData()
-                    $("#roleFormModal").modal('hide')
                     getToastSuccess(result)
                     manageData();
                 }
                 else {
                     getToastError(result)
                 }
+                $("#roleFormModal").modal('hide')
             })
         } else {
             $.ajax({
@@ -101,13 +101,13 @@ $(document).ready(function () {
             }).done(function (result) {
                 if (result.isSuccess == true) {
                     clearFormData()
-                    $("#roleFormModal").modal('hide')
                     getToastSuccess(result)
                     manageData();
                 }
                 else {
                     getToastError(result)
                 }
+                $("#roleFormModal").modal('hide')
             })
         }
     })
@@ -126,12 +126,12 @@ $(document).ready(function () {
         }).done(function (result) {
             if (result.isSuccess == true) {
                 row.closest('tr').remove()
-                $('#deleteModal').modal('hide');
                 getToastSuccess(result)
             }
             else {
                 getToastError(result)
             }
+            $('#deleteModal').modal('hide');
         })
     });
 });

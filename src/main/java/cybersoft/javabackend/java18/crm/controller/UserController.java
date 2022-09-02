@@ -34,10 +34,10 @@ public class UserController extends HttpServlet {
         String id = req.getParameter("id");
         if (id == null) {
             List<UserModel> userModels = userService.findAll();
-            printJson(resp, userModels);
+            responseJson(resp, userModels);
         } else {
             UserModel userModel = userService.findUserById(id);
-            printJson(resp, userModel);
+            responseJson(resp, userModel);
         }
     }
 
@@ -52,7 +52,7 @@ public class UserController extends HttpServlet {
         else
             message = "Add new user failed";
         ResponseData responseData = new ResponseData().getResponseData(result, message);
-        printJson(resp, responseData);
+        responseJson(resp, responseData);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class UserController extends HttpServlet {
         else
             message = "Update user failed";
         ResponseData responseData = new ResponseData().getResponseData(result, message);
-        printJson(resp, responseData);
+        responseJson(resp, responseData);
     }
 
     @Override
@@ -79,10 +79,10 @@ public class UserController extends HttpServlet {
         else
             message = "Delete user failed";
         ResponseData responseData = new ResponseData().getResponseData(result, message);
-        printJson(resp, responseData);
+        responseJson(resp, responseData);
     }
 
-    private void printJson(HttpServletResponse resp, Object object) throws IOException {
+    private void responseJson(HttpServletResponse resp, Object object) throws IOException {
         String json = gson.toJson(object);
         PrintWriter out = resp.getWriter();
         out.println(json);

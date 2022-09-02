@@ -16,7 +16,7 @@ $(document).ready(function () {
                                 <td>${lastName}</td>
                                 <td>${val.email}</td>
                                 <td>${val.roleName}</td>
-                                <td width="20%">
+                                <td>
                                     <a href="#userFormModal" class="btn btn-sm btn-primary btn-edit-user" data-toggle="modal" 
                                         user-id=${val.id}>Sửa</a>
                                     <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete-user" data-toggle="modal" 
@@ -112,12 +112,12 @@ $(document).ready(function () {
             }).done(function(result){
                 if(result.isSuccess = true) {
                     clearFormData()
-                    $('#userFormModal').modal('hide')
                     getToastSuccess(result)
                     manageData()
                 } else {
                     getToastError(result)
                 }
+                $('#userFormModal').modal('hide')
             })
         } else {
             $.ajax({
@@ -133,12 +133,12 @@ $(document).ready(function () {
             }).done(function(result){
                 if(result.isSuccess = true) {
                     clearFormData()
-                    $('#userFormModal').modal('hide')
                     getToastSuccess(result)
                     manageData()
                 } else {
                     getToastError(result)
                 }
+                $('#userFormModal').modal('hide')
             })
         }
     })
@@ -157,11 +157,11 @@ $(document).ready(function () {
         }).done(function(result){
            if(result.isSuccess == true) {
                 row.closest('tr').remove()
-                $('#deleteModal').modal('hide')
                 getToastSuccess(result)
            } else {
                 getToastError(result)
            }
+           $('#deleteModal').modal('hide')
         })
     })
 })

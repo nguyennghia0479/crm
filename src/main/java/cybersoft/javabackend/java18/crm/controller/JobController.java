@@ -38,10 +38,10 @@ public class JobController extends HttpServlet {
         String id = req.getParameter("id");
         if (id == null) {
             List<JobModel> jobModels = jobService.findAll();
-            printJson(resp, jobModels);
+            responseJson(resp, jobModels);
         } else {
             JobModel jobModel = jobService.findJobById(id);
-            printJson(resp, jobModel);
+            responseJson(resp, jobModel);
         }
     }
 
@@ -49,44 +49,30 @@ public class JobController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = getJsonFromRequest(req);
         JobModel jobModel = gson.fromJson(json, JobModel.class);
+        int result = jobService.saveAndUpdateJob(jobModel);
         String message;
-        int result;
-        if (matcher.isValid(jobModel.getStartDate()) && matcher.isValid(jobModel.getEndDate())) {
-            jobModel.setStartDate(matcher.formatDateSQL(jobModel.getStartDate().replace("/", "-")));
-            jobModel.setEndDate(matcher.formatDateSQL(jobModel.getEndDate().replace("/", "-")));
-            result = jobService.saveAndUpdateJob(jobModel);
-            if (result == 1)
-                message = "Add new job successful";
-            else
-                message = "Add new job failed";
+        if (result == 1) {
+            message = "Add new job successful";
         } else {
-            result = 0;
-            message = "Invalid date";
+            message = "Add new job failed";
         }
         ResponseData responseData = new ResponseData().getResponseData(result, message);
-        printJson(resp, responseData);
+        responseJson(resp, responseData);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = getJsonFromRequest(req);
         JobModel jobModel = gson.fromJson(json, JobModel.class);
+        int result = jobService.saveAndUpdateJob(jobModel);
         String message;
-        int result;
-        if (matcher.isValid(jobModel.getStartDate()) && matcher.isValid(jobModel.getEndDate())) {
-            jobModel.setStartDate(matcher.formatDateSQL(jobModel.getStartDate().replace("/", "-")));
-            jobModel.setEndDate(matcher.formatDateSQL(jobModel.getEndDate().replace("/", "-")));
-            result = jobService.saveAndUpdateJob(jobModel);
-            if (result == 1)
-                message = "Update job successful";
-            else
-                message = "Update job failed";
+        if (result == 1) {
+            message = "Update job successful";
         } else {
-            result = 0;
-            message = "Invalid date";
+            message = "Update job failed";
         }
         ResponseData responseData = new ResponseData().getResponseData(result, message);
-        printJson(resp, responseData);
+        responseJson(resp, responseData);
     }
 
     @Override
@@ -99,10 +85,10 @@ public class JobController extends HttpServlet {
         else
             message = "Delete job failed";
         ResponseData responseData = new ResponseData().getResponseData(result, message);
-        printJson(resp, responseData);
+        responseJson(resp, responseData);
     }
 
-    private void printJson(HttpServletResponse resp, Object object) throws IOException {
+    private void responseJson(HttpServletResponse resp, Object object) throws IOException {
         String json = gson.toJson(object);
         PrintWriter out = resp.getWriter();
         out.println(json);
