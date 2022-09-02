@@ -25,7 +25,7 @@ public class UserService {
     }
 
     public UserModel findUserById(String id) {
-        return userRepository.findById(id);
+        return userRepository.findUserById(id);
     }
 
     public int saveAndUpdateUser(UserModel userModel) {

@@ -1,10 +1,11 @@
 package cybersoft.javabackend.java18.crm.controller;
 
 import com.google.gson.Gson;
+import cybersoft.javabackend.java18.crm.model.JobModel;
 import cybersoft.javabackend.java18.crm.model.ResponseData;
-import cybersoft.javabackend.java18.crm.model.UserModel;
-import cybersoft.javabackend.java18.crm.service.UserService;
+import cybersoft.javabackend.java18.crm.service.JobService;
 import cybersoft.javabackend.java18.crm.utils.UrlUtils;
+import cybersoft.javabackend.java18.crm.validation.FormattedDateMatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,55 +17,74 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(name = "userController", urlPatterns = {
-        UrlUtils.URL_USER
+@WebServlet(name = "jobController", urlPatterns = {
+        UrlUtils.URL_JOB
 })
-public class UserController extends HttpServlet {
+public class JobController extends HttpServlet {
+    private JobService jobService;
     private Gson gson;
-    private UserService userService;
+
+    private FormattedDateMatcher matcher;
 
     @Override
     public void init() throws ServletException {
-        userService = UserService.getInstance();
+        jobService = JobService.getInstance();
         gson = new Gson();
+        matcher = new FormattedDateMatcher();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         if (id == null) {
-            List<UserModel> userModels = userService.findAll();
-            printJson(resp, userModels);
+            List<JobModel> jobModels = jobService.findAll();
+            printJson(resp, jobModels);
         } else {
-            UserModel userModel = userService.findUserById(id);
-            printJson(resp, userModel);
+            JobModel jobModel = jobService.findJobById(id);
+            printJson(resp, jobModel);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String reqJson = getJsonFromRequest(req);
-        UserModel userModel = gson.fromJson(reqJson, UserModel.class);
-        int result = userService.saveAndUpdateUser(userModel);
+        String json = getJsonFromRequest(req);
+        JobModel jobModel = gson.fromJson(json, JobModel.class);
         String message;
-        if (result == 1)
-            message = "Add new user successfully";
-        else
-            message = "Add new user failed";
+        int result;
+        if (matcher.isValid(jobModel.getStartDate()) && matcher.isValid(jobModel.getEndDate())) {
+            jobModel.setStartDate(matcher.formatDateSQL(jobModel.getStartDate().replace("/", "-")));
+            jobModel.setEndDate(matcher.formatDateSQL(jobModel.getEndDate().replace("/", "-")));
+            result = jobService.saveAndUpdateJob(jobModel);
+            if (result == 1)
+                message = "Add new job successful";
+            else
+                message = "Add new job failed";
+        } else {
+            result = 0;
+            message = "Invalid date";
+        }
         ResponseData responseData = new ResponseData().getResponseData(result, message);
         printJson(resp, responseData);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String reqJson = getJsonFromRequest(req);
-        UserModel userModel = gson.fromJson(reqJson, UserModel.class);
-        int result = userService.saveAndUpdateUser(userModel);
+        String json = getJsonFromRequest(req);
+        JobModel jobModel = gson.fromJson(json, JobModel.class);
         String message;
-        if (result == 1)
-            message = "Update user successfully";
-        else
-            message = "Update user failed";
+        int result;
+        if (matcher.isValid(jobModel.getStartDate()) && matcher.isValid(jobModel.getEndDate())) {
+            jobModel.setStartDate(matcher.formatDateSQL(jobModel.getStartDate().replace("/", "-")));
+            jobModel.setEndDate(matcher.formatDateSQL(jobModel.getEndDate().replace("/", "-")));
+            result = jobService.saveAndUpdateJob(jobModel);
+            if (result == 1)
+                message = "Update job successful";
+            else
+                message = "Update job failed";
+        } else {
+            result = 0;
+            message = "Invalid date";
+        }
         ResponseData responseData = new ResponseData().getResponseData(result, message);
         printJson(resp, responseData);
     }
@@ -72,12 +92,12 @@ public class UserController extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
-        int result = userService.deleteUserById(id);
+        int result = jobService.deleteJobById(id);
         String message;
         if (result == 1)
-            message = "Delete user successfully";
+            message = "Delete job successfully";
         else
-            message = "Delete user failed";
+            message = "Delete job failed";
         ResponseData responseData = new ResponseData().getResponseData(result, message);
         printJson(resp, responseData);
     }
@@ -91,8 +111,8 @@ public class UserController extends HttpServlet {
 
     private String getJsonFromRequest(HttpServletRequest req) throws IOException {
         StringBuilder builder = new StringBuilder();
-        BufferedReader br = new BufferedReader(req.getReader());
         String line = "";
+        BufferedReader br = new BufferedReader(req.getReader());
         while ((line = br.readLine()) != null) {
             builder.append(line);
         }

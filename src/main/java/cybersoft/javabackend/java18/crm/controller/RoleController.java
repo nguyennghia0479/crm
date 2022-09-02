@@ -49,9 +49,9 @@ public class RoleController extends HttpServlet {
         int result = roleService.saveAndUpdateRole(roleModel);
         String message;
         if (result == 1) {
-            message = "Added new role successful";
+            message = "Add new role successfully";
         } else {
-            message = "Added new role failed";
+            message = "Add new role failed";
         }
         ResponseData responseData = new ResponseData().getResponseData(result, message);
         printJson(resp, responseData);
@@ -63,9 +63,9 @@ public class RoleController extends HttpServlet {
         int result = roleService.deleteRoleById(id);
         String message;
         if (result == 1) {
-            message = "Deleted role successful";
+            message = "Delete role successfully";
         } else {
-            message = "Deleted role failed";
+            message = "Delete role failed";
         }
         ResponseData responseData = new ResponseData().getResponseData(result, message);
         printJson(resp, responseData);
@@ -78,9 +78,9 @@ public class RoleController extends HttpServlet {
         int result = roleService.saveAndUpdateRole(roleModel);
         String message;
         if (result == 1) {
-            message = "Updated role successful";
+            message = "Update role successfully";
         } else {
-            message = "Updated role failed";
+            message = "Update role failed";
         }
         ResponseData responseData = new ResponseData().getResponseData(result, message);
         printJson(resp, responseData);

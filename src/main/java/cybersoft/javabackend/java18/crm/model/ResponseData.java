@@ -16,7 +16,7 @@ public class ResponseData {
             responseData.setMessage(message);
             responseData.setSuccess(true);
         } else {
-            responseData.setStatusCode(201);
+            responseData.setStatusCode(200);
             responseData.setMessage(message);
             responseData.setSuccess(false);
         }

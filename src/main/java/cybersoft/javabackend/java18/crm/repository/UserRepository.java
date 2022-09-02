@@ -34,7 +34,7 @@ public class UserRepository extends AbstractRepository<UserModel> {
         });
     }
 
-    public UserModel findById(String id) {
+    public UserModel findUserById(String id) {
         final String query = """
                 select id, fullname, email, password, role_id
                 from users
