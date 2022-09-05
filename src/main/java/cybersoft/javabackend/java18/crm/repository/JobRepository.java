@@ -10,9 +10,6 @@ import java.util.List;
 
 public class JobRepository extends AbstractRepository<JobModel> {
 
-    public JobRepository() {
-    }
-
     public List<JobModel> findAll() {
         final String query = """
                 select id, name, start_date, end_date from jobs
@@ -91,6 +88,24 @@ public class JobRepository extends AbstractRepository<JobModel> {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, id);
             return statement.executeUpdate();
+        });
+    }
+
+    public List<JobModel> getJobToSelect() {
+        final String query = """
+                select id, name from jobs
+                """;
+        return executeQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            List<JobModel> jobModels = new ArrayList<>();
+            while (resultSet.next()) {
+                JobModel jobModel = new JobModel();
+                jobModel.setId(resultSet.getInt("id"));
+                jobModel.setName(resultSet.getString("name"));
+                jobModels.add(jobModel);
+            }
+            return jobModels;
         });
     }
 }

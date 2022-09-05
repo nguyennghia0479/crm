@@ -8,25 +8,26 @@ import cybersoft.javabackend.java18.crm.utils.UrlUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
-// api/role -> Get
 @WebServlet(name = "roleController", urlPatterns = {
         UrlUtils.URL_ROLE
 })
-public class RoleController extends HttpServlet {
-    private final Gson gson = new Gson();
+public class RoleController extends AbstractController {
     private RoleService roleService;
+
+    private Gson gson;
+
+    private ResponseData responseData;
 
     @Override
     public void init() throws ServletException {
         roleService = RoleService.getINSTANCE();
+        gson = new Gson();
+        responseData = new ResponseData();
     }
 
     @Override
@@ -45,7 +46,7 @@ public class RoleController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        String json = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         String reqJson = getJsonFromRequest(req);
-        RoleModel roleModel = new Gson().fromJson(reqJson, RoleModel.class);
+        RoleModel roleModel = gson.fromJson(reqJson, RoleModel.class);
         int result = roleService.saveAndUpdateRole(roleModel);
         String message;
         if (result == 1) {
@@ -53,7 +54,7 @@ public class RoleController extends HttpServlet {
         } else {
             message = "Add new role failed";
         }
-        ResponseData responseData = new ResponseData().getResponseData(result, message);
+        responseData.getResponseData(result, message);
         responseJson(resp, responseData);
     }
 
@@ -67,14 +68,14 @@ public class RoleController extends HttpServlet {
         } else {
             message = "Delete role failed";
         }
-        ResponseData responseData = new ResponseData().getResponseData(result, message);
+        responseData.getResponseData(result, message);
         responseJson(resp, responseData);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String reqJson = getJsonFromRequest(req);
-        RoleModel roleModel = new Gson().fromJson(reqJson, RoleModel.class);
+        RoleModel roleModel = gson.fromJson(reqJson, RoleModel.class);
         int result = roleService.saveAndUpdateRole(roleModel);
         String message;
         if (result == 1) {
@@ -82,24 +83,7 @@ public class RoleController extends HttpServlet {
         } else {
             message = "Update role failed";
         }
-        ResponseData responseData = new ResponseData().getResponseData(result, message);
+        responseData.getResponseData(result, message);
         responseJson(resp, responseData);
-    }
-
-    private void responseJson(HttpServletResponse resp, Object object) throws IOException {
-        String respJson = this.gson.toJson(object);
-        PrintWriter out = resp.getWriter();
-        out.println(respJson);
-        out.flush();
-    }
-
-    private String getJsonFromRequest(HttpServletRequest req) throws IOException {
-        BufferedReader br = new BufferedReader(req.getReader());
-        StringBuilder builder = new StringBuilder();
-        String line = "";
-        while ((line = br.readLine()) != null) {
-            builder.append(line);
-        }
-        return builder.toString();
     }
 }

@@ -8,36 +8,43 @@ import cybersoft.javabackend.java18.crm.utils.UrlUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet(name = "userController", urlPatterns = {
-        UrlUtils.URL_USER
+        UrlUtils.URL_USER,
+        UrlUtils.URL_SELECT_USER
 })
-public class UserController extends HttpServlet {
-    private Gson gson;
+public class UserController extends AbstractController {
     private UserService userService;
+
+    private Gson gson;
+
+    private ResponseData responseData;
 
     @Override
     public void init() throws ServletException {
         userService = UserService.getInstance();
         gson = new Gson();
+        responseData = new ResponseData();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("id");
-        if (id == null) {
-            List<UserModel> userModels = userService.findAll();
-            responseJson(resp, userModels);
+        if (req.getServletPath().equals(UrlUtils.URL_USER)) {
+            String id = req.getParameter("id");
+            if (id == null) {
+                List<UserModel> userModels = userService.findAll();
+                responseJson(resp, userModels);
+            } else {
+                UserModel userModel = userService.findUserById(id);
+                responseJson(resp, userModel);
+            }
         } else {
-            UserModel userModel = userService.findUserById(id);
-            responseJson(resp, userModel);
+            List<UserModel> userModels = userService.getUserToSelect();
+            responseJson(resp, userModels);
         }
     }
 
@@ -51,7 +58,7 @@ public class UserController extends HttpServlet {
             message = "Add new user successfully";
         else
             message = "Add new user failed";
-        ResponseData responseData = new ResponseData().getResponseData(result, message);
+        responseData.getResponseData(result, message);
         responseJson(resp, responseData);
     }
 
@@ -65,7 +72,7 @@ public class UserController extends HttpServlet {
             message = "Update user successfully";
         else
             message = "Update user failed";
-        ResponseData responseData = new ResponseData().getResponseData(result, message);
+        responseData.getResponseData(result, message);
         responseJson(resp, responseData);
     }
 
@@ -78,24 +85,7 @@ public class UserController extends HttpServlet {
             message = "Delete user successfully";
         else
             message = "Delete user failed";
-        ResponseData responseData = new ResponseData().getResponseData(result, message);
+        responseData.getResponseData(result, message);
         responseJson(resp, responseData);
-    }
-
-    private void responseJson(HttpServletResponse resp, Object object) throws IOException {
-        String json = gson.toJson(object);
-        PrintWriter out = resp.getWriter();
-        out.println(json);
-        out.flush();
-    }
-
-    private String getJsonFromRequest(HttpServletRequest req) throws IOException {
-        StringBuilder builder = new StringBuilder();
-        BufferedReader br = new BufferedReader(req.getReader());
-        String line = "";
-        while ((line = br.readLine()) != null) {
-            builder.append(line);
-        }
-        return builder.toString();
     }
 }

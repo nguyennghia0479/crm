@@ -38,4 +38,8 @@ public class JobService {
     public int deleteJobById(String id) {
         return jobRepository.deleteRoleById(id);
     }
+
+    public List<JobModel> getJobToSelect() {
+        return jobRepository.getJobToSelect();
+    }
 }

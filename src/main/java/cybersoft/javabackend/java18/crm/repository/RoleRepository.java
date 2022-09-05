@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoleRepository extends AbstractRepository<RoleModel> {
-    public RoleRepository() {
-    }
 
     public List<RoleModel> findAll() {
         final String query = """

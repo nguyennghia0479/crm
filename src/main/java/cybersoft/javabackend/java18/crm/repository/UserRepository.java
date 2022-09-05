@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository extends AbstractRepository<UserModel> {
-    public UserRepository() {
-    }
 
     public List<UserModel> findAll() {
         final String query = """
@@ -97,6 +95,24 @@ public class UserRepository extends AbstractRepository<UserModel> {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, id);
             return statement.executeUpdate();
+        });
+    }
+
+    public List<UserModel> getUserToSelect() {
+        final String query = """
+                select id, fullname from users            
+                """;
+        return executeQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            List<UserModel> userModels = new ArrayList<>();
+            while (resultSet.next()) {
+                UserModel userModel = new UserModel();
+                userModel.setId(resultSet.getInt("id"));
+                userModel.setFullName(resultSet.getString("fullname"));
+                userModels.add(userModel);
+            }
+            return userModels;
         });
     }
 }

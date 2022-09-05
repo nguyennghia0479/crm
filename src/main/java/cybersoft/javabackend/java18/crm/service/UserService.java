@@ -39,4 +39,8 @@ public class UserService {
     public int deleteUserById(String id) {
         return userRepository.deleteUserById(id);
     }
+
+    public List<UserModel> getUserToSelect() {
+        return userRepository.getUserToSelect();
+    }
 }

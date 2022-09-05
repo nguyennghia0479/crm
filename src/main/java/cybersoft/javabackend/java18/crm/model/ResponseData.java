@@ -9,17 +9,15 @@ public class ResponseData {
     private Object data;
     private boolean isSuccess;
 
-    public ResponseData getResponseData(int result, String message) {
-        ResponseData responseData = new ResponseData();
+    public void getResponseData(int result, String message) {
         if (result == 1) {
-            responseData.setStatusCode(200);
-            responseData.setMessage(message);
-            responseData.setSuccess(true);
+            this.statusCode = 200;
+            this.message = message;
+            this.isSuccess = true;
         } else {
-            responseData.setStatusCode(200);
-            responseData.setMessage(message);
-            responseData.setSuccess(false);
+            this.statusCode = 200;
+            this.message = message;
+            this.isSuccess = false;
         }
-        return responseData;
     }
 }

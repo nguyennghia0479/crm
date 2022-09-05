@@ -1,9 +1,9 @@
 package cybersoft.javabackend.java18.crm.controller;
 
 import com.google.gson.Gson;
-import cybersoft.javabackend.java18.crm.model.JobModel;
 import cybersoft.javabackend.java18.crm.model.ResponseData;
-import cybersoft.javabackend.java18.crm.service.JobService;
+import cybersoft.javabackend.java18.crm.model.TaskModel;
+import cybersoft.javabackend.java18.crm.service.TaskService;
 import cybersoft.javabackend.java18.crm.utils.UrlUtils;
 
 import javax.servlet.ServletException;
@@ -13,12 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "jobController", urlPatterns = {
-        UrlUtils.URL_JOB,
-        UrlUtils.URL_SELECT_JOB
+@WebServlet(name = "taskController", urlPatterns = {
+        UrlUtils.URL_TASK
 })
-public class JobController extends AbstractController {
-    private JobService jobService;
+public class TaskController extends AbstractController {
+    private TaskService taskService;
 
     private Gson gson;
 
@@ -26,39 +25,34 @@ public class JobController extends AbstractController {
 
     @Override
     public void init() throws ServletException {
-        jobService = JobService.getInstance();
+        taskService = TaskService.getINSTANCE();
         gson = new Gson();
         responseData = new ResponseData();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getServletPath().equals(UrlUtils.URL_JOB)) {
-            String id = req.getParameter("id");
-            if (id == null) {
-                List<JobModel> jobModels = jobService.findAll();
-                responseJson(resp, jobModels);
-            } else {
-                JobModel jobModel = jobService.findJobById(id);
-                responseJson(resp, jobModel);
-            }
+        String id = req.getParameter("id");
+        if (id == null) {
+            List<TaskModel> taskModels = taskService.findAll();
+            responseJson(resp, taskModels);
         } else {
-            List<JobModel> jobModels = jobService.getJobToSelect();
-            responseJson(resp, jobModels);
+            TaskModel taskModel = taskService.findTaskById(id);
+            responseJson(resp, taskModel);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = getJsonFromRequest(req);
-        JobModel jobModel = gson.fromJson(json, JobModel.class);
-        int result = jobService.saveAndUpdateJob(jobModel);
+        TaskModel taskModel = gson.fromJson(json, TaskModel.class);
+        taskModel.setStatusId(1);
+        int result = taskService.saveAndUpdateTask(taskModel);
         String message;
-        if (result == 1) {
-            message = "Add new job successful";
-        } else {
-            message = "Add new job failed";
-        }
+        if (result == 1)
+            message = "Add new task successfully";
+        else
+            message = "Add new task failed";
         responseData.getResponseData(result, message);
         responseJson(resp, responseData);
     }
@@ -66,14 +60,13 @@ public class JobController extends AbstractController {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = getJsonFromRequest(req);
-        JobModel jobModel = gson.fromJson(json, JobModel.class);
-        int result = jobService.saveAndUpdateJob(jobModel);
+        TaskModel taskModel = gson.fromJson(json, TaskModel.class);
+        int result = taskService.saveAndUpdateTask(taskModel);
         String message;
-        if (result == 1) {
-            message = "Update job successful";
-        } else {
-            message = "Update job failed";
-        }
+        if (result == 1)
+            message = "Update task successfully";
+        else
+            message = "Update task failed";
         responseData.getResponseData(result, message);
         responseJson(resp, responseData);
     }
@@ -81,12 +74,12 @@ public class JobController extends AbstractController {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
-        int result = jobService.deleteJobById(id);
+        int result = taskService.deleteTaskById(id);
         String message;
         if (result == 1)
-            message = "Delete job successfully";
+            message = "Delete task successfully";
         else
-            message = "Delete job failed";
+            message = "Delete task failed";
         responseData.getResponseData(result, message);
         responseJson(resp, responseData);
     }
