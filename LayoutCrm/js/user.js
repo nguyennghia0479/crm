@@ -21,7 +21,7 @@ $(document).ready(function () {
                                         user-id=${val.id}>Sửa</a>
                                     <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete-user" data-toggle="modal" 
                                         user-id=${val.id}>Xóa</a>
-                                    <a href="user-details.html" class="btn btn-sm btn-info">Xem</a>
+                                    <a href="user-details.html?id=${val.id}" class="btn btn-sm btn-info">Xem</a>
                                 </td>
                             </tr>`
                 $("#userTable tbody").append(row)

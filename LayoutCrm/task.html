@@ -196,6 +196,7 @@
                         </div>
                         <div class="modal-body">
                             <form class="form-horizontal form-material">
+                                <input id="id" type="hidden"class="form-control form-control-line">
                                 <div class="form-group">
                                     <label class="col-md-12">Dự án</label>
                                     <div class="col-md-12">
@@ -203,7 +204,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                <input id="id" type="hidden"class="form-control form-control-line">
                                 <div class="form-group">
                                     <label class="col-md-12">Tên công việc</label>
                                     <div class="col-md-12">
@@ -230,16 +230,6 @@
                                     <div class="col-md-12">
                                         <input id="endDate" type="date" placeholder="dd/MM/yyyy"
                                             class="form-control form-control-line">
-                                    </div>
-                                </div>
-                                <div id="form-select-status" class="form-group">
-                                    <label class="col-md-12">Trạng thái</label>
-                                    <div class="col-md-12">
-                                        <select id="statusSelect" class="form-control form-control-line">
-                                            <option value="1">Chưa thực hiện</option>
-                                            <option value="2">Đang thực hiện</option>
-                                            <option value="3">Đã hoàn thành</option>
-                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -274,6 +264,8 @@
     <!-- Custom Theme JavaScript -->
     <script src="js/custom.min.js"></script>
     <script src="js/task.js"></script>
+    <script src="plugins/bower_components/jquery-cookie/jquery.cookie.js"></script>
+    <script src="js/cookie.js"></script>
     <script>
         $(document).ready(function () {
             $('#taskTable').DataTable();

@@ -3,6 +3,7 @@ package cybersoft.javabackend.java18.crm.controller;
 import com.google.gson.Gson;
 import cybersoft.javabackend.java18.crm.model.ResponseData;
 import cybersoft.javabackend.java18.crm.model.TaskModel;
+import cybersoft.javabackend.java18.crm.model.UserModel;
 import cybersoft.javabackend.java18.crm.service.TaskService;
 import cybersoft.javabackend.java18.crm.utils.UrlUtils;
 
@@ -14,7 +15,10 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "taskController", urlPatterns = {
-        UrlUtils.URL_TASK
+        UrlUtils.URL_TASK,
+        UrlUtils.URL_PROFILE,
+        UrlUtils.URL_USER_DETAILS,
+        UrlUtils.URL_JOB_DETAILS
 })
 public class TaskController extends AbstractController {
     private TaskService taskService;
@@ -32,13 +36,26 @@ public class TaskController extends AbstractController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("id");
-        if (id == null) {
-            List<TaskModel> taskModels = taskService.findAll();
+        if (req.getServletPath().equals(UrlUtils.URL_TASK)) {
+            String id = req.getParameter("id");
+            if (id == null) {
+                List<TaskModel> taskModels = taskService.findAll();
+                responseJson(resp, taskModels);
+            } else {
+                TaskModel taskModel = taskService.findTaskById(id);
+                responseJson(resp, taskModel);
+            }
+        } else if (req.getServletPath().equals(UrlUtils.URL_USER_DETAILS)) {
+            String userId = req.getParameter("id");
+            List<TaskModel> taskModels = taskService.getUserDetails(userId);
             responseJson(resp, taskModels);
+        } else if (req.getServletPath().equals(UrlUtils.URL_JOB_DETAILS)) {
+            String jobId = req.getParameter("id");
+            List<UserModel> userModels = taskService.getJobDetailsById(jobId);
+            responseJson(resp, userModels);
         } else {
-            TaskModel taskModel = taskService.findTaskById(id);
-            responseJson(resp, taskModel);
+            List<TaskModel> taskModels = taskService.findTaskByUser("2");
+            responseJson(resp, taskModels);
         }
     }
 
@@ -61,14 +78,25 @@ public class TaskController extends AbstractController {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = getJsonFromRequest(req);
         TaskModel taskModel = gson.fromJson(json, TaskModel.class);
-        int result = taskService.saveAndUpdateTask(taskModel);
-        String message;
-        if (result == 1)
-            message = "Update task successfully";
-        else
-            message = "Update task failed";
-        responseData.getResponseData(result, message);
-        responseJson(resp, responseData);
+        if (req.getServletPath().equals(UrlUtils.URL_TASK)) {
+            int result = taskService.saveAndUpdateTask(taskModel);
+            String message;
+            if (result == 1)
+                message = "Update task successfully";
+            else
+                message = "Update task failed";
+            responseData.getResponseData(result, message);
+            responseJson(resp, responseData);
+        } else {
+            int result = taskService.updateProfile(taskModel);
+            String message;
+            if (result == 1)
+                message = "Update profile successfully";
+            else
+                message = "Update profile failed";
+            responseData.getResponseData(result, message);
+            responseJson(resp, responseData);
+        }
     }
 
     @Override

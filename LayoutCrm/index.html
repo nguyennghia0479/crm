@@ -40,8 +40,9 @@
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top m-b-0">
-            <div class="navbar-header"> 
-                <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse">
+            <div class="navbar-header">
+                <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse"
+                    data-target=".navbar-collapse">
                     <i class="fa fa-bars"></i>
                 </a>
                 <div class="top-left-part">
@@ -57,7 +58,7 @@
                 <ul class="nav navbar-top-links navbar-left m-l-20 hidden-xs">
                     <li>
                         <form role="search" class="app-search hidden-xs">
-                            <input type="text" placeholder="Search..." class="form-control"> 
+                            <input type="text" placeholder="Search..." class="form-control">
                             <a href="">
                                 <i class="fa fa-search"></i>
                             </a>
@@ -67,15 +68,16 @@
                 <ul class="nav navbar-top-links navbar-right pull-right">
                     <li>
                         <div class="dropdown">
-                            <a class="profile-pic dropdown-toggle" data-toggle="dropdown" href="#"> 
-                                <img src="plugins/images/users/varun.jpg" alt="user-img" width="36" class="img-circle" />
-                                <b class="hidden-xs">Cybersoft</b> 
+                            <a class="profile-pic dropdown-toggle" data-toggle="dropdown" href="#">
+                                <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
+                                    class="img-circle" />
+                                <b class="hidden-xs">Cybersoft</b>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="profile.html">Thông tin cá nhân</a></li>
                                 <li><a href="#">Thống kê công việc</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">Đăng xuất</a></li>
+                                <li><a id="logout" href="#">Đăng xuất</a></li>
                             </ul>
                         </div>
                     </li>
@@ -245,6 +247,9 @@
     <script src="js/custom.min.js"></script>
     <script src="js/dashboard1.js"></script>
     <script src="plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+    <script src="js/login.js"></script>
+    <script src="plugins/bower_components/jquery-cookie/jquery.cookie.js"></script>
+    <script src="js/cookie.js"></script>
 </body>
 
 </html>

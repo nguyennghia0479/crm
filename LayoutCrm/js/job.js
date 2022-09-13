@@ -17,7 +17,7 @@ $(document).ready(function() {
                                         job-id=${val.id}>Sửa</a>
                                     <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete-job" data-toggle="modal" 
                                         job-id=${val.id}>Xóa</a>
-                                    <a href="groupwork-details.html" class="btn btn-sm btn-info">Xem</a>
+                                    <a href="groupwork-details.html?id=${val.id}" class="btn btn-sm btn-info">Xem</a>
                                 </td>
                             </tr>`
                 $("#jobTable tbody").append(row)

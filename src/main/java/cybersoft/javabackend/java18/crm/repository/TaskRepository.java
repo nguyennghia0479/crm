@@ -36,7 +36,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 
     public TaskModel findTaskById(String id) {
         final String query = """
-                select id, name, start_date, end_date, user_id, job_id, status_id
+                select id, name, start_date, end_date, user_id, job_id
                 from tasks where id = ?
                 """;
         return executeQuerySingle(connection -> {
@@ -51,7 +51,6 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
                 taskModel.setEndDate(resultSet.getString("end_date"));
                 taskModel.setUserId(resultSet.getInt("user_id"));
                 taskModel.setJobId(resultSet.getInt("job_id"));
-                taskModel.setStatusId(resultSet.getInt("status_id"));
                 return taskModel;
             }
             return null;
@@ -78,7 +77,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
     public int updateTask(TaskModel taskModel) {
         final String query = """
                 update tasks
-                set name = ?, start_date = ?, end_date = ?, user_id= ?, job_id = ?, status_id = ?
+                set name = ?, start_date = ?, end_date = ?, user_id= ?, job_id = ?
                 where id = ?
                 """;
         return executeUpdate(connection -> {
@@ -88,8 +87,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
             statement.setString(3, taskModel.getEndDate());
             statement.setInt(4, taskModel.getUserId());
             statement.setInt(5, taskModel.getJobId());
-            statement.setInt(6, taskModel.getStatusId());
-            statement.setInt(7, taskModel.getId());
+            statement.setInt(6, taskModel.getId());
             return statement.executeUpdate();
         });
     }
@@ -102,6 +100,117 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, id);
             return statement.executeUpdate();
+        });
+    }
+
+    public List<TaskModel> findTaskByUser(String userId) {
+        final String query = """
+                select t.id, t.name, j.name as job, t.start_date, t.end_date, s.name as status, s.id as status_id
+                from tasks t, jobs j, users u, status s
+                where t.job_id = j.id and t.user_id = u.id and t.status_id = s.id
+                and u.id = ?
+                 """;
+        return executeQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            List<TaskModel> taskModels = new ArrayList<>();
+            while (resultSet.next()) {
+                TaskModel taskModel = new TaskModel();
+                taskModel.setId(resultSet.getInt("id"));
+                taskModel.setName(resultSet.getString("name"));
+                taskModel.setJobName(resultSet.getString("job"));
+                taskModel.setStartDate(resultSet.getString("start_date"));
+                taskModel.setEndDate(resultSet.getString("end_date"));
+                taskModel.setStatusName(resultSet.getString("status"));
+                taskModel.setStatusId(resultSet.getInt("status_id"));
+                taskModels.add(taskModel);
+            }
+            return taskModels;
+        });
+    }
+
+    public int updateProfile(TaskModel taskModel) {
+        final String query = """
+                update tasks set status_id = ?
+                where id = ?
+                """;
+        return executeUpdate(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, taskModel.getStatusId());
+            statement.setInt(2, taskModel.getId());
+            return statement.executeUpdate();
+        });
+    }
+
+    public List<TaskModel> getUserDetails(String userId) {
+        final String query = """
+                select u.id, t.name, t.start_date, t.end_date, s.id as status_id, j.name as job
+                from users u, tasks t, status s, jobs j
+                where u.id = t.user_id and s.id = t.status_id and j.id = t.job_id and u.id = ?
+                """;
+        return executeQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            List<TaskModel> taskModels = new ArrayList<>();
+            while (resultSet.next()) {
+                TaskModel taskModel = new TaskModel();
+                taskModel.setUserId(resultSet.getInt("id"));
+                taskModel.setName(resultSet.getString("name"));
+                taskModel.setStartDate(resultSet.getString("start_date"));
+                taskModel.setEndDate(resultSet.getString("end_date"));
+                taskModel.setStatusId(resultSet.getInt("status_id"));
+                taskModel.setJobName(resultSet.getString("job"));
+                taskModels.add(taskModel);
+            }
+            return taskModels;
+        });
+    }
+
+    public List<TaskModel> getUserParticipateJob(String jobId) {
+        final String query = """
+                select u.id, u.fullname
+                from users u, jobs j, tasks t
+                where u.id = t.user_id and j.id = t.job_id and j.id = ?
+                group by u.id
+                """;
+        return executeQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, jobId);
+            ResultSet resultSet = statement.executeQuery();
+            List<TaskModel> taskModels = new ArrayList<>();
+            while (resultSet.next()) {
+                TaskModel taskModel = new TaskModel();
+                taskModel.setUserId(resultSet.getInt("id"));
+                taskModel.setFullName(resultSet.getString("fullname"));
+                taskModels.add(taskModel);
+            }
+            return taskModels;
+        });
+    }
+
+    public List<TaskModel> getUserTaskByJobId(String jobId, String userId) {
+        final String query = """
+                select u.id as user_id, t.name, s.id as status_id
+                from tasks t, jobs j, users u, status s
+                where t.job_id = j.id and t.user_id = u.id and t.status_id = s.id
+                and j.id = ? and u.id = ?
+                """;
+        return executeQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, jobId);
+            statement.setString(2, userId);
+            ResultSet resultSet = statement.executeQuery();
+            List<TaskModel> taskModels = new ArrayList<>();
+            while (resultSet.next()) {
+                TaskModel taskModel = new TaskModel();
+                taskModel.setUserId(resultSet.getInt("user_id"));
+                taskModel.setName(resultSet.getString("name"));
+                taskModel.setStatusId(resultSet.getInt("status_id"));
+                taskModels.add(taskModel);
+            }
+            return taskModels;
         });
     }
 }

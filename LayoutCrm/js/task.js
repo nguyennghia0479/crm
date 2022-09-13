@@ -87,15 +87,6 @@ $(document).ready(function() {
         return pattern
     }
 
-    function datePatternForSQL(date) {
-        var split = date.split("-")
-        var day = split[1]
-        var month = split[1]
-        var year = split[2]
-        var pattern = year.concat("-", month.concat("-", day))
-        return pattern
-    }
-
     function clearFormData() {
         $("#id").val('')
         $("#name").val('')
@@ -109,7 +100,6 @@ $(document).ready(function() {
         clearFormData()
         getJobSelect(null)
         getUserSelect(null)
-        $("#form-select-status").hide()
     })
 
     $("body").on('click', '.btn-edit-task', function() {
@@ -124,8 +114,6 @@ $(document).ready(function() {
             $("#endDate").val(result.endDate)
             getJobSelect(result.jobId)
             getUserSelect(result.userId)
-            $("#form-select-status").show()
-            $("#statusSelect").val(result.statusId)
         })
     })
 
