@@ -1,8 +1,24 @@
 $(document).ready(function() {
 
+    function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName;
+
+        for (var i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+        return false;
+    }
+
     function manageData() {
+        var userId = getUrlParameter("id")
         $.ajax({
-            url : "http://localhost:8080/crm/api/profile",
+            url : `http://localhost:8080/crm/api/profile?id=${userId}`,
             method : "GET"
         }).done(function(result) {
             $("#profileTable tbody").empty()
@@ -93,5 +109,5 @@ $(document).ready(function() {
     })
 
     $(".non-start").text("33.33%")
-    $(".non-start").css("width", "73.33%")
+    $(".non-start").css("width", "33%")
 })

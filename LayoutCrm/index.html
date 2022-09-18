@@ -39,7 +39,9 @@
     </div>
     <div id="wrapper">
         <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top m-b-0">
+        <div id="navbar">
+        </div>
+        <!-- <nav class="navbar navbar-default navbar-static-top m-b-0">
             <div class="navbar-header">
                 <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse"
                     data-target=".navbar-collapse">
@@ -82,13 +84,13 @@
                         </div>
                     </li>
                 </ul>
-            </div>
-            <!-- /.navbar-header -->
-            <!-- /.navbar-top-links -->
-            <!-- /.navbar-static-side -->
-        </nav>
+            </div> -->
+        <!-- /.navbar-header -->
+        <!-- /.navbar-top-links -->
+        <!-- /.navbar-static-side -->
+        <!-- </nav> -->
         <!-- Left navbar-header -->
-        <div class="navbar-default sidebar" role="navigation">
+        <!-- <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse slimscrollsidebar">
                 <ul class="nav" id="side-menu">
                     <li style="padding: 10px 0 0;">
@@ -121,6 +123,8 @@
                     </li>
                 </ul>
             </div>
+        </div> -->
+        <div id="sidebar">
         </div>
         <!-- Left navbar-header end -->
         <!-- Page Content -->
@@ -247,9 +251,22 @@
     <script src="js/custom.min.js"></script>
     <script src="js/dashboard1.js"></script>
     <script src="plugins/bower_components/toast-master/js/jquery.toast.js"></script>
-    <script src="js/login.js"></script>
     <script src="plugins/bower_components/jquery-cookie/jquery.cookie.js"></script>
     <script src="js/cookie.js"></script>
+    <script>
+        function changeActiveLink() {
+            var currentLocation = window.location.href;
+            currentLocation = currentLocation.replace('//', '/').split('/');
+            var page = currentLocation[currentLocation.length - 1];    
+            $('#sidebar a[href*="' + page + '"]').addClass('active');
+        }
+    </script>
+    <script>
+        $(function () {
+            $("#navbar").load('/layout/navbar.html')
+            $("#sidebar").load('/layout/sidebar.html', changeActiveLink)
+        })
+    </script>
 </body>
 
 </html>

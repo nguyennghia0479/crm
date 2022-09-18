@@ -115,4 +115,27 @@ public class UserRepository extends AbstractRepository<UserModel> {
             return userModels;
         });
     }
+
+    public UserModel getUserByEmail(String email) {
+        final String query = """
+                select u.id, u.fullname, u.email, u.password, r.name as role
+                from users u, roles r
+                where u.role_id = r.id and u.email = ?
+                """;
+        return executeQuerySingle(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                UserModel userModel = new UserModel();
+                userModel.setId(resultSet.getInt("id"));
+                userModel.setFullName(resultSet.getString("fullname"));
+                userModel.setEmail(resultSet.getString("email"));
+                userModel.setPassword(resultSet.getString("password"));
+                userModel.setRoleName(resultSet.getString("role"));
+                return userModel;
+            }
+            return null;
+        });
+    }
 }

@@ -2,10 +2,11 @@ package cybersoft.javabackend.java18.crm.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class UserModel {
+public class UserModel implements Serializable {
     private Integer id;
     private String email;
     private String password;

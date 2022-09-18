@@ -16,6 +16,7 @@ import java.util.List;
 @WebServlet(name = "userController", urlPatterns = {
         UrlUtils.URL_USER,
         UrlUtils.URL_SELECT_USER
+//        "/user-table.html"
 })
 public class UserController extends AbstractController {
     private UserService userService;

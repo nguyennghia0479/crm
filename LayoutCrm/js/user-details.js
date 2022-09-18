@@ -15,6 +15,15 @@ $(document).ready(function() {
         return false;
     }
 
+    function datePatternForUser(date) {
+        var split = date.split("-")
+        var year = split[0]
+        var month = split[1]
+        var day = split[2]
+        var pattern = day.concat("-", month.concat("-", year))
+        return pattern
+    }
+
     function manageData() {
         var userId = getUrlParameter("id")
         $.ajax({
@@ -29,8 +38,8 @@ $(document).ready(function() {
                                 <div class="mail-contnet">
                                     <h5>${val.name}</h5>
                                     <span class="mail-desc">${val.jobName}</span>
-                                    <span class="time">Bắt đầu: ${val.startDate}</span>
-                                    <span class="time">Kết thúc: ${val.endDate}</span>
+                                    <span class="time">Bắt đầu: ${datePatternForUser(val.startDate)}</span>
+                                    <span class="time">Kết thúc: ${datePatternForUser(val.endDate)}</span>
                                 </div>
                             </a>`
                 if(val.statusId == 1) {

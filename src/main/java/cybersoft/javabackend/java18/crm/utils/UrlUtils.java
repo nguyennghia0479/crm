@@ -3,7 +3,9 @@ package cybersoft.javabackend.java18.crm.utils;
 public class UrlUtils {
     public static final String ALL = "/*";
 
-    public static final String LOGIN = "/login";
+    public static final String LOGIN = "/api/login";
+
+    public static final String LOGOUT = "/api/logout";
 
     public static final String URL_ROLE = "/api/role";
 

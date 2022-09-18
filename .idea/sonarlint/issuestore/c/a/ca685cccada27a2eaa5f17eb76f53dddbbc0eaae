@@ -1,0 +1,10 @@
+
+o
+java:S1989!"YHandle the following exception that could be thrown by "getJsonFromRequest": IOException.(†±÷µ
+r
+java:S1989""WHandle the following exception that could be thrown by "fromJson": JsonSyntaxException.(É©É«þÿÿÿÿ
+u
+java:S1989*"SHandle the following exception that could be thrown by "responseJson": IOException.(ˆô¿íÿÿÿÿÿ8ð µö³0
+U	java:S106,"9Replace this use of System.out or System.err by a logger.(ÒÒôÅ8ŸŽàÈ´0
+u
+java:S1989-"SHandle the following exception that could be thrown by "responseJson": IOException.(Öø˜Ÿûÿÿÿÿ8ð µö³0

@@ -54,7 +54,8 @@ public class TaskController extends AbstractController {
             List<UserModel> userModels = taskService.getJobDetailsById(jobId);
             responseJson(resp, userModels);
         } else {
-            List<TaskModel> taskModels = taskService.findTaskByUser("2");
+            String userId = req.getParameter("id");
+            List<TaskModel> taskModels = taskService.findTaskByUser(userId);
             responseJson(resp, taskModels);
         }
     }
