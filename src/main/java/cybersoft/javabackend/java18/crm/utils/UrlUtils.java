@@ -26,4 +26,10 @@ public class UrlUtils {
     public static final String URL_TASK = "/api/task";
 
     public static final String URL_PROFILE = "/api/profile";
+
+    public static final String URL_PROFILE_PROGRESS = "/api/profile-progress";
+
+    public static final String URL_JOB_PROGRESS = "/api/job-progress";
+
+    public static final String URL_TASKS_PROGRESS = "/api/tasks-progress";
 }

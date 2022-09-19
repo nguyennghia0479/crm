@@ -53,6 +53,6 @@ Morris.Area({
 });
 
 $(".counter").counterUp({
-    delay: 100,
+    delay: 3000,
     time: 1200
 });

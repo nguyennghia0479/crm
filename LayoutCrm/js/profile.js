@@ -40,6 +40,35 @@ $(document).ready(function() {
         })
     }
 
+    function manageProgress() {
+        var userId = $.cookie("id")
+        $.ajax({
+            url : `http://localhost:8080/crm/api/profile-progress?id=${userId}`,
+            method : "GET"
+        }).done(function(result) {
+            var amount = result.amount
+            var backlog, inProgress, done
+            if(amount == 0) {
+                $(".backlog").text("0%")
+                $(".backlog").css("width","0%")
+                $(".inProgress").text("0%")
+                $(".inProgress").css("width","0%")
+                $(".done").text("0%")
+                $(".done").css("width","0%")
+            } else {
+                backlog = (result.backLog / amount * 100).toFixed(2)
+                inProgress = (result.inProgress / amount * 100).toFixed(2)
+                done = (result.done / amount * 100).toFixed(2)
+                $(".backlog").text(backlog + "%")
+                $(".backlog").css("width", + backlog  +"%")
+                $(".inProgress").text(inProgress + "%")
+                $(".inProgress").css("width", + inProgress +"%")
+                $(".done").text(done + "%")
+                $(".done").css("width", + done +"%")
+            }
+        })
+    }
+
     function getToastSuccess(result) {
         $.toast({
             heading: 'Success',
@@ -70,6 +99,7 @@ $(document).ready(function() {
     }
 
     manageData()
+    manageProgress()
 
     $("body").on('click', '.btn-edit-profile', function() {
         var taskId = $(this).attr("task-id")
@@ -101,6 +131,7 @@ $(document).ready(function() {
             if(result.isSuccess == true) {
                 getToastSuccess(result)
                 manageData()
+                manageProgress()
             } else {
                 getToastError(result)
             }
@@ -108,6 +139,4 @@ $(document).ready(function() {
         })
     })
 
-    $(".non-start").text("33.33%")
-    $(".non-start").css("width", "33%")
 })

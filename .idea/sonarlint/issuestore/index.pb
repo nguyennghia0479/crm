@@ -1,6 +1,4 @@
 
-r
-Bsrc/main/java/cybersoft/javabackend/java18/crm/model/JobModel.java,0\4\044c43e3f631e2da91083f71facd14e16038a512
 u
 Esrc/main/java/cybersoft/javabackend/java18/crm/model/StatusModel.java,6\b\6b140412de1aedec93afc960fb28e820d02891ff
 }
@@ -40,14 +38,24 @@ Ksrc/main/java/cybersoft/javabackend/java18/crm/filter/SimpleCORSFilter.java,6\
 v
 Fsrc/main/java/cybersoft/javabackend/java18/crm/model/ResponseData.java,1\1\11362ef9985aa093aa112a3daf681d2eaabe4d9b
 }
-Msrc/main/java/cybersoft/javabackend/java18/crm/controller/UserController.java,9\f\9f59014cf020a8f7d80f330b40b9e1debf3fb98d
-|
-Lsrc/main/java/cybersoft/javabackend/java18/crm/controller/JobController.java,c\7\c7a6c1618ee953d954ac9b7da309176d123f284a
+Msrc/main/java/cybersoft/javabackend/java18/crm/repository/UserRepository.java,c\9\c972e7c20905e1c3a94851e1471aca0a8abf2284
 r
-Bsrc/main/java/cybersoft/javabackend/java18/crm/utils/UrlUtils.java,5\4\54d35b3883ea4843eb5964c267403131ee17c9ac
+Bsrc/main/java/cybersoft/javabackend/java18/crm/model/JobModel.java,0\4\044c43e3f631e2da91083f71facd14e16038a512
 }
 Msrc/main/java/cybersoft/javabackend/java18/crm/controller/AuthController.java,c\a\ca685cccada27a2eaa5f17eb76f53dddbbc0eaae
-}
-Msrc/main/java/cybersoft/javabackend/java18/crm/repository/UserRepository.java,c\9\c972e7c20905e1c3a94851e1471aca0a8abf2284
+w
+Gsrc/main/java/cybersoft/javabackend/java18/crm/model/ProgressModel.java,e\b\ebb9161e11b0472ab79b32b026988ed8a05a9892
+|
+Lsrc/main/java/cybersoft/javabackend/java18/crm/controller/JobController.java,c\7\c7a6c1618ee953d954ac9b7da309176d123f284a
 }
 Msrc/main/java/cybersoft/javabackend/java18/crm/controller/TaskController.java,a\b\ab6de66226612cbf63471ee02575e782489cfaff
+}
+Msrc/main/java/cybersoft/javabackend/java18/crm/controller/UserController.java,9\f\9f59014cf020a8f7d80f330b40b9e1debf3fb98d
+r
+Bsrc/main/java/cybersoft/javabackend/java18/crm/utils/UrlUtils.java,5\4\54d35b3883ea4843eb5964c267403131ee17c9ac
+Å
+Qsrc/main/java/cybersoft/javabackend/java18/crm/repository/ProgressRepository.java,7\d\7d329c5a09287e828f7b10ba0bb377b0fb086951
+{
+Ksrc/main/java/cybersoft/javabackend/java18/crm/service/ProgressService.java,0\f\0f63ad8512169b51dd9d8fef2b698b26261db5d7
+Å
+Qsrc/main/java/cybersoft/javabackend/java18/crm/controller/ProgressController.java,6\2\62dd110cf88390e8c103c254faa40e71a48c3402

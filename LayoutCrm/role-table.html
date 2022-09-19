@@ -162,19 +162,7 @@
     <script src="js/role.js"></script>
     <script src="plugins/bower_components/jquery-cookie/jquery.cookie.js"></script>
     <script src="js/cookie.js"></script>
-    <script>
-        function changeActiveLink() {
-            var currentLocation = window.location.href;
-            currentLocation = currentLocation.replace('//', '/').split('/');
-            var page = currentLocation[currentLocation.length - 1];
-            $('#sidebar a[href*="' + page + '"]').addClass('active');
-        }
-
-        $(function () {
-            $("#navbar").load('/layout/navbar.html')
-            $("#sidebar").load('/layout/sidebar.html', changeActiveLink)
-        })
-    </script>
+    <script src="js/layout.js"></script>
     <script>
         $(document).ready(function () {
             $('#roleTable').DataTable();
