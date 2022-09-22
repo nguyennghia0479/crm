@@ -32,4 +32,10 @@ public class UrlUtils {
     public static final String URL_JOB_PROGRESS = "/api/job-progress";
 
     public static final String URL_TASKS_PROGRESS = "/api/tasks-progress";
+
+    public static final String URL_UPLOAD_FILE = "/api/upload-file";
+
+    public static final String URL_DOWNLOAD_FILE = "/api/download-file";
+
+    public static final String URL_GET_USER_ID = "/api/upload";
 }

@@ -138,4 +138,35 @@ public class UserRepository extends AbstractRepository<UserModel> {
             return null;
         });
     }
+
+    public int saveAvatar(String userId, String path) {
+        final String query = """
+                update users
+                set avatar = ?
+                where id = ?
+                """;
+        return executeUpdate(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, path);
+            statement.setString(2, userId);
+            return statement.executeUpdate();
+        });
+    }
+
+    public UserModel downloadAvatar(String userId) {
+        final String query = """
+                select avatar from users where id = ?
+                """;
+        return executeQuerySingle(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                UserModel userModel = new UserModel();
+                userModel.setAvatar(resultSet.getString("avatar"));
+                return userModel;
+            }
+            return null;
+        });
+    }
 }

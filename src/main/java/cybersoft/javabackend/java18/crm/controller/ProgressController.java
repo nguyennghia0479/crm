@@ -28,7 +28,6 @@ public class ProgressController extends AbstractController {
         String id = req.getParameter("id");
         if (id == null) {
             ProgressModel progressModel = progressService.findProgressForAllTask();
-            System.out.println(progressModel);
             responseJson(resp, progressModel);
         } else {
             if (req.getServletPath().equals(UrlUtils.URL_PROFILE_PROGRESS)) {

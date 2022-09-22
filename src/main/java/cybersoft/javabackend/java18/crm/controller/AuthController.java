@@ -41,7 +41,6 @@ public class AuthController extends AbstractController {
             responseData.getResponseData(result, message);
             responseJson(resp, responseData);
         } else {
-            System.out.println(userModel);
             responseJson(resp, userModel);
         }
     }

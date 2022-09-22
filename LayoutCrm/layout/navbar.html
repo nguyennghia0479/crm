@@ -28,7 +28,8 @@
             <li>
                 <div class="dropdown">
                     <a class="profile-pic dropdown-toggle" data-toggle="dropdown" href="#">
-                        <img src="plugins/images/users/varun.jpg" alt="user-img" width="36" class="img-circle" />
+                        <img id="navbar-avatar" src="plugins/images/users/varun.jpg" alt="user-img" height="40"
+                            width="40" class="img-circle" />
                         <b class="hidden-xs">Cybersoft</b>
                     </a>
                     <ul class="dropdown-menu">
@@ -46,4 +47,17 @@
                 <li><a id="logout" href="#">Đăng xuất</a></li>`
     $(".dropdown-menu").append(row)
 </script>
-<script src="js/login.js"></script>
+<script src="/js/login.js"></script>
+<script>
+    function getAvatar() {
+        var userId = $.cookie("id")
+        $.ajax({
+            url: `http://localhost:8080/crm/api/download-file?id=${userId}`,
+            method: "GET"
+        }).done(function () {
+            $("#avatar").attr('src', `http://localhost:8080/crm/api/download-file?id=${userId}`)
+            $("#navbar-avatar").attr('src', `http://localhost:8080/crm/api/download-file?id=${userId}`)
+        })
+    }
+    getAvatar()
+</script>
