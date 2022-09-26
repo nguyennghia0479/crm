@@ -14,4 +14,5 @@ function changeActiveLink() {
 $(function () {
     $("#navbar").load('/layout/navbar.html')
     $("#sidebar").load('/layout/sidebar.html', changeActiveLink)
+    $("#modal-delete").load('/layout/modal-delete.html')
 })

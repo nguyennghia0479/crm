@@ -55,7 +55,6 @@
             url: `http://localhost:8080/crm/api/download-file?id=${userId}`,
             method: "GET"
         }).done(function () {
-            $("#avatar").attr('src', `http://localhost:8080/crm/api/download-file?id=${userId}`)
             $("#navbar-avatar").attr('src', `http://localhost:8080/crm/api/download-file?id=${userId}`)
         })
     }

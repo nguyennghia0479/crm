@@ -14,8 +14,8 @@ $(document).ready(function () {
                                 <td>
                                     <a href="#roleFormModal" class="btn btn-sm btn-primary btn-edit-role" data-toggle="modal"
                                         role-id="${val.id}">Sửa</a>
-                                    <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete-role" data-toggle="modal"
-                                        role-id="${val.id}">Xóa</a>
+                                    <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete" data-toggle="modal"
+                                        id="${val.id}" target="role">Xóa</a>
                                 </td>
                             </tr>`
                 $("#roleTable tbody").append(row);
@@ -111,27 +111,4 @@ $(document).ready(function () {
             })
         }
     })
-
-    $("body").on('click', '.btn-delete-role', function () {
-        var roleId = $(this).attr('role-id');
-        $(".confirm-delete").attr("role-id", roleId);
-    });
-
-    $("body").on('click', '.confirm-delete', function () {
-        var roleId = $(this).attr('role-id')
-        var row = $('.btn-delete-role[role-id=' + roleId + ']');
-        $.ajax({
-            url: `http://localhost:8080/crm/api/role?id=${roleId}`,
-            method: "DELETE",
-        }).done(function (result) {
-            if (result.isSuccess == true) {
-                row.closest('tr').remove()
-                getToastSuccess(result)
-            }
-            else {
-                getToastError(result)
-            }
-            $('#deleteModal').modal('hide');
-        })
-    });
 });

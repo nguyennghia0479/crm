@@ -26,7 +26,8 @@ $(document).ready(function() {
                var row = `<div id=${value.id} class="row">
                                 <div class="col-xs-12">
                                     <a href="#" class="group-title">
-                                        <img width="30" src="plugins/images/users/pawandeep.jpg" class="img-circle" />
+                                        <img width="30" src="http://localhost:8080/crm/api/download-file?id=${value.id}"
+                                            class="img-circle" />
                                         <span>${value.fullName}</span>
                                     </a>
                                 </div>

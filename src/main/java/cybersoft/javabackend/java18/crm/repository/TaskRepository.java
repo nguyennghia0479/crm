@@ -14,6 +14,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
                 select t.id, t.name, j.name as job, u.fullname, t.start_date, t.end_date, s.name as status
                 from tasks t, jobs j, users u, status s
                 where t.job_id = j.id and t.user_id = u.id and t.status_id = s.id
+                order by j.id asc, t.name asc
                 """;
         return executeQuery(connection -> {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -103,12 +104,14 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
         });
     }
 
+    // use for user profile
     public List<TaskModel> findTaskByUser(String userId) {
         final String query = """
                 select t.id, t.name, j.name as job, t.start_date, t.end_date, s.name as status, s.id as status_id
                 from tasks t, jobs j, users u, status s
                 where t.job_id = j.id and t.user_id = u.id and t.status_id = s.id
                 and u.id = ?
+                order by j.id asc
                  """;
         return executeQuery(connection -> {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -143,6 +146,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
         });
     }
 
+    // user for user-details
     public List<TaskModel> getUserDetails(String userId) {
         final String query = """
                 select u.id, t.name, t.start_date, t.end_date, s.id as status_id, j.name as job
@@ -168,6 +172,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
         });
     }
 
+    // user for groupwork-details
     public List<TaskModel> getUserParticipateJob(String jobId) {
         final String query = """
                 select u.id, u.fullname
@@ -190,6 +195,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
         });
     }
 
+    // user for groupwork-details
     public List<TaskModel> getUserTaskByJobId(String jobId, String userId) {
         final String query = """
                 select u.id as user_id, t.name, s.id as status_id

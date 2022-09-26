@@ -14,6 +14,7 @@ public class UserRepository extends AbstractRepository<UserModel> {
                 select u.id, u.email, u.password, u.fullname, r.name
                 from users u, roles r
                 where u.role_id = r.id
+                order by role_id asc
                 """;
         return executeQuery(connection -> {
             PreparedStatement statement = connection.prepareStatement(query);

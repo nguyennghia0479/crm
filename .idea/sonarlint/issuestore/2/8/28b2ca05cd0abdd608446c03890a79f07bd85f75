@@ -1,7 +1,7 @@
 
 _
-java:S1192"IDefine a constant instead of duplicating this literal "end_date" 4 times.(Β‰Ώ 
-e
-java:S1192~"JDefine a constant instead of duplicating this literal "status_id" 3 times.(χόªώÿÿÿÿ
+java:S1192"IDefine a constant instead of duplicating this literal "end_date" 4 times.(Β‰Ώ 
+f
+java:S1192"JDefine a constant instead of duplicating this literal "status_id" 3 times.(χόªώÿÿÿÿ
 a
-java:S1192"KDefine a constant instead of duplicating this literal "start_date" 4 times.(„²Θΰ
+java:S1192"KDefine a constant instead of duplicating this literal "start_date" 4 times.(„²Θΰ

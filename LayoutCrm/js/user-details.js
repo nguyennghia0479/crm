@@ -26,6 +26,7 @@ $(document).ready(function() {
 
     function manageData() {
         var userId = getUrlParameter("id")
+        $("#avatar").attr('src', `http://localhost:8080/crm/api/download-file?id=${userId}`)
         $.ajax({
             url : `http://127.0.0.1:8080/crm/api/user-details?id=${userId}`,
             method: "GET"

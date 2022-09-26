@@ -18,8 +18,8 @@ $(document).ready(function() {
                                 <td>
                                     <a href="#taskFormModal" class="btn btn-sm btn-primary btn-edit-task" data-toggle="modal"
                                         task-id=${val.id}>Sửa</a>
-                                    <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete-task" data-toggle="modal"
-                                        task-id=${val.id}>Xóa</a>
+                                    <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete" data-toggle="modal"
+                                        id=${val.id} target="task">Xóa</a>
                                     <a href="#" class="btn btn-sm btn-info">Xem</a>
                                 </td>
                             </tr>`
@@ -169,27 +169,5 @@ $(document).ready(function() {
                 $("#taskFormModal").modal('hide')
             })
         }
-    })
-
-    $("body").on('click', '.btn-delete-task', function() {
-        var taskId = $(this).attr("task-id")
-        $(".confirm-delete").attr("task-id", taskId)
-    })
-
-    $(".confirm-delete").click(function() {
-        var taskId = $(this).attr("task-id")
-        var row = $(".btn-delete-task[task-id=" + taskId + "]")
-        $.ajax({
-            url: `http://localhost:8080/crm/api/task?id=${taskId}`,
-            method: "DELETE"
-        }).done(function(result) {
-            if(result.isSuccess == true) {
-                row.closest('tr').remove()
-                getToastSuccess(result)
-            } else {
-                getToastError(result)
-            }
-            $("#deleteModal").modal('hide')
-        })
     })
 })

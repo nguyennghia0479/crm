@@ -15,8 +15,8 @@ $(document).ready(function() {
                                 <td>
                                     <a href="#jobFormModal" class="btn btn-sm btn-primary btn-edit-job" data-toggle="modal" 
                                         job-id=${val.id}>Sửa</a>
-                                    <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete-job" data-toggle="modal" 
-                                        job-id=${val.id}>Xóa</a>
+                                    <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete" data-toggle="modal" 
+                                        id=${val.id} target="job">Xóa</a>
                                     <a href="groupwork-details.html?id=${val.id}" class="btn btn-sm btn-info">Xem</a>
                                 </td>
                             </tr>`
@@ -133,27 +133,5 @@ $(document).ready(function() {
                 $("#jobFormModal").modal('hide')
             })
         }
-    })
-
-    $("body").on('click', '.btn-delete-job', function() {
-        var jobId = $(this).attr("job-id")
-        $('.confirm-delete').attr("job-id", jobId)
-    })
-
-    $(".confirm-delete").click(function() {
-        var jobId = $(this).attr("job-id")
-        var row = $(".btn-delete-job[job-id=" + jobId + "]")
-        $.ajax({
-            url: `http://localhost:8080/crm/api/job?id=${jobId}`,
-            method: "DELETE"
-        }).done(function(result) {
-            if(result.isSuccess == true) {
-                row.closest('tr').remove()
-                getToastSuccess(result)
-            } else {
-                getToastError(result)
-            }
-            $("#deleteModal").modal('hide')
-        })
     })
 })

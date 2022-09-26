@@ -19,8 +19,8 @@ $(document).ready(function () {
                                 <td>
                                     <a href="#userFormModal" class="btn btn-sm btn-primary btn-edit-user" data-toggle="modal" 
                                         user-id=${val.id}>Sửa</a>
-                                    <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete-user" data-toggle="modal" 
-                                        user-id=${val.id}>Xóa</a>
+                                    <a href="#deleteModal" class="btn btn-sm btn-danger btn-delete" data-toggle="modal" 
+                                        id=${val.id} target="user">Xóa</a>
                                     <a href="user-details.html?id=${val.id}" class="btn btn-sm btn-info">Xem</a>
                                 </td>
                             </tr>`
@@ -141,27 +141,5 @@ $(document).ready(function () {
                 $('#userFormModal').modal('hide')
             })
         }
-    })
-
-    $("body").on('click', '.btn-delete-user', function(e) {
-        var userId = $(this).attr("user-id")
-        $(".confirm-delete").attr("user-id", userId)
-    })
-
-    $(".confirm-delete").click(function(e) {
-        var userId = $(this).attr("user-id")
-        var row = $(".btn-delete-user[user-id=" + userId + "]")
-        $.ajax({
-            url : `http://localhost:8080/crm/api/user?id=${userId}`,
-            method : "DELETE"
-        }).done(function(result){
-           if(result.isSuccess == true) {
-                row.closest('tr').remove()
-                getToastSuccess(result)
-           } else {
-                getToastError(result)
-           }
-           $('#deleteModal').modal('hide')
-        })
     })
 })

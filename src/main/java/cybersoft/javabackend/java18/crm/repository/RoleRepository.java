@@ -32,7 +32,7 @@ public class RoleRepository extends AbstractRepository<RoleModel> {
         final String query = """
                 select id, name, description
                 from roles
-                where id = ?            
+                where id = ?    
                 """;
         return executeQuerySingle(connection -> {
             PreparedStatement statement = connection.prepareStatement(query);
