@@ -1,15 +1,5 @@
 $(document).ready(function() {
 
-    function getToastError(result) {
-        $.toast({
-            heading: 'Error',
-            position: 'top-center',
-            text: result.message,
-            showHideTransition: 'fade',
-            icon: 'error',
-        })
-    }
-
     function setCookie(id, fullName, email, role) {
         $.cookie('id', id)
         $.cookie('fullName', fullName)
@@ -37,11 +27,11 @@ $(document).ready(function() {
                 password : dataPassword
             })
         }).done(function(result) {
-            if(result.id != '') {
+            if(result != null) {
                 setCookie(result.id, result.fullName, result.email, result.roleName)
                 window.location.href = "/index.html"
-            } if(result.isSuccess == false) {
-                getToastError(result)
+            } else {
+                $('.alert').css('display', 'block')
             }
         })
         
